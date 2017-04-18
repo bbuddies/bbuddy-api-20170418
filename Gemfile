@@ -44,3 +44,6 @@ gem 'devise'
 gem 'omniauth'
 gem 'devise_token_auth'
 gem 'rack-cors', :require => 'rack/cors'
+group :test, :development do
+  gem "rspec-rails"
+end
