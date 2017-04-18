@@ -4,13 +4,12 @@ class LicensesController < ApplicationController
 
   # POST /licenses
   def create
-    # p license_params.month
-    License.create(license_params)
+    license = License.create(license_params)
     # @license = License.new()
 
-    # if @license.save
-    #   render json: @license, status: :created, location: @license
-    # end
+    if license.save
+      render json: license, status: :created, data: license
+    end
   end
 
 
