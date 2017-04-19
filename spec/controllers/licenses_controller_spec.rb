@@ -72,16 +72,11 @@ RSpec.describe LicensesController, type: :controller do
 
   it "should get fee" do
     add_license({month: "2017-01", amount: 500})
-    add_license({month: "2017-02", amount: 500})
-    add_license({month: "2017-03", amount: 500})
-    add_license({month: "2017-04", amount: 500})
-    add_license({month: "2017-05", amount: 500})
-    add_license({month: "2017-06", amount: 500})
+    add_license({month: "2017-03", amount: 310})
 
-
-    get '/fee?start_date="2017-01-01"&end_date="2017-05-31"'
+    get :get_fee, start_date:"2017-01-01", end_date:"2017-03-20"
     data = JSON.parse(response.body)
-    expect(data["fee"]).to eq(100)
+    expect(data["fee"]).to eq(700)
 
   end
 
