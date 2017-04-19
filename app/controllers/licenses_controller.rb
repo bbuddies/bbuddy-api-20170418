@@ -4,14 +4,21 @@ class LicensesController < ApplicationController
 
   # POST /licenses
   def create
-    license = License.create(license_params)
-    # @license = License.new()
+    license = License.where(month: license_params[:month]).first
+
+    if license.nil?
+      license = License.create(license_params)
+    else
+      license.amount = license_params[:amount]
+    end
+    
 
     if license.save
       render json: license, status: :created, data: license
     end
-  end
 
+    
+  end
 
   private
     # Only allow a trusted parameter "white list" through.
