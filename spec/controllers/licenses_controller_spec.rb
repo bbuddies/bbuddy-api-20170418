@@ -38,7 +38,16 @@ RSpec.describe LicensesController, type: :controller do
         license = {month: '2017-06', amount: 600}
         post :create, license: license, format: :json
 
-        get :license_price, start_at: "2017-03-16", end_at: "2017-06-15"
-        expect(assigns(:total)).to eq(400)
+        get :license_price, start_date: "2017-03-16", end_date: "2017-06-15"
+        expect(assigns(:total)).to eq(403)
    end
+
+   it "get price if start_date and end_date are in same month" do
+        license = {month: '2017-04', amount: 200}
+        post :create, license: license, format: :json
+
+        get :license_price, start_date: "2017-04-16", end_date: "2017-04-30"
+        expect(assigns(:total)).to eq(100)
+   end
+
 end

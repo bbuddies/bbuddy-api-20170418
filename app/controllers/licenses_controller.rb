@@ -15,6 +15,11 @@ class LicensesController < ApplicationController
         render :json => {:status => 'ok', :message => nil,  :data => @licenses}
     end
 
+    def license_price
+        @total = DomainLicense.caculate_license_price(params)
+        render :json => {:status => 'ok', :message => nil, :data => @total}
+    end
+
     def license_params
         params.require("license").permit(:month, :amount)
     end
