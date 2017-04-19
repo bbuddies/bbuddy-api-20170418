@@ -38,5 +38,13 @@ RSpec.describe LicensesController, type: :controller do
     
     expect(actual).to be_nil
   end
+
+  it 'search licenses with start date and end date' do
+    period = {start: '2017-02-10', end: '2017-02-14'}
+
+    get :search, params: period, format: :json
+
+    expect(response.body.to_i).to eq(5)
+  end
   
 end
