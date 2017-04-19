@@ -20,4 +20,15 @@ RSpec.describe LicensesController, type: :controller do
 
         expect(assigns(:licenses)).to eq(licenses)
     end
+
+    it "UPDATE license into database" do 
+        license = {month: '2017-05', amount: 100}
+        post :create, license: license, format: :json
+        license = {month: '2017-05', amount: 200}
+        post :create, license: license, format: :json
+
+        licenses = License.all
+        expect(licenses.count).to eq(1)
+        expect(licenses.first.amount).to eq(200)
+    end
 end
