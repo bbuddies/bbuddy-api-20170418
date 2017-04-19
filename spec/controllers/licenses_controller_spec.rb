@@ -31,4 +31,14 @@ RSpec.describe LicensesController, type: :controller do
         expect(licenses.count).to eq(1)
         expect(licenses.first.amount).to eq(200)
     end
+
+    it "get price according to given time" do
+        license = {month: '2017-03', amount: 200}
+        post :create, license: license, format: :json
+        license = {month: '2017-06', amount: 600}
+        post :create, license: license, format: :json
+
+        get :license_price, start_at: "2017-03-16", end_at: "2017-06-15"
+        expect(assigns(:total)).to eq(400)
+   end
 end
