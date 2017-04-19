@@ -9,20 +9,12 @@ class LicensesController < ApplicationController
       return
     end
 
-    @license = License.find_by month: license_params[:month]
-    if @license.nil?
-      @license = License.new(license_params)
-      if @license.save
-        render json: @license, status: :created, location: @license
-      else
-        render json: errors(@license.errors), status: :unprocessable_entity
-      end
+    @license = License.where(:month => license_params[:month]).first_or_create
+    @license.amount = license_params[:amount]
+    if @license.save
+      render json: @license, status: :created, location: @license
     else
-      if @license.update(license_params)
-        render json: @license
-      else
-        render json: errors(@license.errors), status: :unprocessable_entity
-      end
+      render json: errors(@license.errors), status: :unprocessable_entity
     end
   end
 end
