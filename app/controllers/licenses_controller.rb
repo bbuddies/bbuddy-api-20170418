@@ -2,6 +2,13 @@ class LicensesController < ApplicationController
   # before_action :set_account, only: [:show, :update, :destroy]
   # before_action :authenticate_user!
 
+  # GET /license
+  def index
+    @licenses = License.all
+
+    render json: @licenses
+  end
+
   # POST /licenses
   def create
     license = License.where(month: license_params[:month]).first
