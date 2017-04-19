@@ -8,6 +8,9 @@ class LicensesController < ApplicationController
       if (license_params[:amount].to_i <= 0)
         raise "amount must > 0"
       end
+      if (/^\d{4}-\d{2}$/=~license_params[:month]).nil?
+        raise "invalid date"
+      end
       Date.strptime(license_params[:month], '%Y-%m')
     rescue Exception => e
       render json: {code: 400, message: e.message}, status: :bad_request

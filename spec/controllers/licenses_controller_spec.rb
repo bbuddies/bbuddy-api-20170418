@@ -29,7 +29,7 @@ RSpec.describe LicensesController, type: :controller do
     expect(actual.amount).to eq(license[:amount])
   end
 
-  it "should update license when license exists" do
+  it "should check amount > 0" do
     license = {
         month: "2018-09", amount: 0
     }
@@ -41,9 +41,9 @@ RSpec.describe LicensesController, type: :controller do
     expect(actual).to eq(nil)
   end
 
-  it "should update license when license exists" do
+  it "should check month format" do
     license = {
-        month: "2018-99", amount: 0
+        month: "2018-100", amount: 0
     }
 
     post :create, license: license, format: :json
