@@ -6,6 +6,11 @@ class LicensesController < ApplicationController
   def create
     license = License.where(month: license_params[:month]).first
 
+    if license_params[:amount].to_i <= 0
+      render json: nil, status: :bad_request, data: nil
+      return
+    end
+    
     if license.nil?
       license = License.create(license_params)
     else
