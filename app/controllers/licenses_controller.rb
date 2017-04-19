@@ -1,11 +1,12 @@
+require "domain_model/domain_license"
+
 class LicensesController < ApplicationController
     def create
-        @license = License.where(:month => license_params[:month]).first_or_create
-        @license.amount = license_params[:amount]
-        if @license.save
+        result = DomainLicense.save(license_params)
+        if result
             render :json => {:status => 'ok', :message => nil, :data => nil}
         else
-            render json: errors(@license.errors), status: 400
+            render json: errors(result), status: 400
         end
     end
 
