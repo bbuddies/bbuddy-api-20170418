@@ -41,4 +41,16 @@ RSpec.describe LicensesController, type: :controller do
     expect(actual).to eq(nil)
   end
 
+  it "should update license when license exists" do
+    license = {
+        month: "2018-99", amount: 0
+    }
+
+    post :create, license: license, format: :json
+
+    actual = License.all.first
+    expect(response.code).to eq("400")
+    expect(actual).to eq(nil)
+  end
+
 end

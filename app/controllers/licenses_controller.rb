@@ -4,8 +4,13 @@ class LicensesController < ApplicationController
   # POST /accounts
   def create
     license_params = params.require(:license).permit(:month, :amount)
-    if (license_params[:amount].to_i <= 0)
-      render json: nil, status: :bad_request
+    begin
+      if (license_params[:amount].to_i <= 0)
+        raise "amount must > 0"
+      end
+      Date.strptime(license_params[:month], '%Y-%m')
+    rescue Exception => e
+      render json: {code: 400, message: e.message}, status: :bad_request
       return
     end
 
