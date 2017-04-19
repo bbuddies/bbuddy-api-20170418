@@ -71,23 +71,22 @@ class LicensesController < ApplicationController
 
       total_fee = 0.0
       for result in @license
-        p result.month
         if start_date.to_time.strftime("%Y-%m").to_s == result.month
           last_date = Date.civil(start_date.to_time.strftime("%Y").to_i,
                                  start_date.to_time.strftime("%m").to_i, -1)
-                          .strftime("%d").to_i
-          total_fee += result.amount * (last_date - start_date.to_time.strftime("%d").to_i + 1)/last_date
+                          .strftime("%d").to_f
+          total_fee += result.amount * (last_date - start_date.to_time.strftime("%d").to_f + 1.0)/last_date
         elsif end_date.to_time.strftime("%Y-%m").to_s == result.month
           last_date = Date.civil(end_date.to_time.strftime("%Y").to_i,
                                  end_date.to_time.strftime("%m").to_i, -1)
-                          .strftime("%d").to_i
-          total_fee += result.amount * end_date.to_time.strftime("%d").to_i / last_date
+                          .strftime("%d").to_f
+          total_fee += result.amount * end_date.to_time.strftime("%d").to_f / last_date
         else
           total_fee += result.amount
         end
       end
-
-      render json: {fee: total_fee}, status: :created
+      
+      render json: {fee: format("%.2f",total_fee).to_f}, status: :created
 
 
     rescue Exception => e
