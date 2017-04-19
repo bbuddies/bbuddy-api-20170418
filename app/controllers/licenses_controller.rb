@@ -9,6 +9,12 @@ class LicensesController < ApplicationController
     render json: @licenses
   end
 
+  # GET /licenses/1
+  def show
+    @license = License.find(params[:id])
+    render json: @license
+  end
+
   # POST /licenses
   def create
     license = License.where(month: license_params[:month]).first
