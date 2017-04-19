@@ -10,7 +10,7 @@ class LicensesController < ApplicationController
     end
 
     def index
-        @licenses = License.all
+        @licenses = License.all.order('month asc')
         render :json => {:status => 'ok', :message => nil,  :data => @licenses}
     end
 

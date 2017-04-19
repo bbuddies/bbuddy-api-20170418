@@ -15,7 +15,7 @@ RSpec.describe LicensesController, type: :controller do
         license = {month: '2017-02', amount: 500}
         post :create, license: license, format: :json
 
-        licenses = License.all
+        licenses = License.all.order('month asc')
         get :index
 
         expect(assigns(:licenses)).to eq(licenses)
