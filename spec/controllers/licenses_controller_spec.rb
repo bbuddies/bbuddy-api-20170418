@@ -80,6 +80,45 @@ RSpec.describe LicensesController, type: :controller do
 
   end
 
+  it "should get fee" do
+    add_license({month: "2017-01", amount: 500})
+    add_license({month: "2017-02", amount: 500})
+    add_license({month: "2017-03", amount: 310})
+    get :index
+    p JSON.parse(response.body)
+
+    get :get_fee, start_date:"2017-01-01", end_date:"2017-03-20"
+    data = JSON.parse(response.body)
+    expect(data["fee"]).to eq(1200)
+
+  end
+
+  it "should get fee" do
+    add_license({month: "2017-01", amount: 500})
+    add_license({month: "2017-02", amount: 500})
+    add_license({month: "2017-03", amount: 310})
+    get :index
+    p JSON.parse(response.body)
+
+    get :get_fee, start_date:"2017-03-01", end_date:"2017-03-20"
+    data = JSON.parse(response.body)
+    expect(data["fee"]).to eq(200)
+
+  end
+
+  it "should get fee" do
+    add_license({month: "2017-01", amount: 310})
+    add_license({month: "2017-02", amount: 500})
+    add_license({month: "2017-03", amount: 310})
+    get :index
+    p JSON.parse(response.body)
+
+    get :get_fee, start_date:"2017-01-17", end_date:"2017-03-20"
+    data = JSON.parse(response.body)
+    expect(data["fee"]).to eq(850)
+
+  end
+
   def add_license(data)
     post :create, license: data, format: :json
   end
