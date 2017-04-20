@@ -4,14 +4,14 @@ class License < ApplicationRecord
     return Time.now.strftime('%Y-%m-%d %H:%M:%S.%L')
   end
 
-  def getItems(startDate, endDate)
+  def getItemsByMonth(startDate, endDate)
     License.where(month: (startDate - 1.month)..endDate)
   end
 
   def getTotalAmount(startDate, endDate)
     step = startDate
     total = 0
-    licenses = getItems(startDate, endDate)
+    licenses = getItemsByMonth(startDate, endDate)
 
     while step <= endDate
       days = Time.days_in_month(step.month, step.year)
