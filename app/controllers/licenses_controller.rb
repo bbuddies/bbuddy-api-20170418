@@ -1,6 +1,9 @@
 class LicensesController < ApplicationController
   before_action :set_account, only: [:show, :update, :destroy]
 
+  def initialize
+    @licenses_service = LicensesService.new
+  end
   # POST /accounts
   def create
     license_params = params.require(:license).permit(:month, :amount)
@@ -36,15 +39,6 @@ class LicensesController < ApplicationController
 
   def get_fee
     license_params = params.permit(:start_date, :end_date)
-    @license = License.new
-    start_date = @license.get_date(license_params[:start_date])
-    end_date = @license.get_date(license_params[:end_date])
-    if start_date.nil? or end_date.nil?
-      render json: {code: 400, message: "invalid date"}, status: :bad_request
-      return
-    end
-    @licenses = License.where("month >= ? AND month <= ?", start_date[:date].strftime("%Y-%m"), end_date[:date].strftime("%Y-%m"))
-    total_fee = @license.fee(@licenses, start_date, end_date)
-    render json: {fee: format("%.2f",total_fee).to_f}, status: :created
+    render @licenses_service.get_fee(license_params)
   end
 end

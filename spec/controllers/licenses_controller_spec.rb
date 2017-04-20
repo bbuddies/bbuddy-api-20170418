@@ -80,7 +80,20 @@ RSpec.describe LicensesController, type: :controller do
 
   end
 
-  it "should get fee" do
+  it "should get fee different years" do
+    add_license({month: "2017-01", amount: 310})
+    add_license({month: "2017-03", amount: 300})
+    add_license({month: "2018-01", amount: 310})
+    add_license({month: "2017-02", amount: 300})
+    add_license({month: "2017-05", amount: 300})
+
+    get :get_fee, start_date:"2017-01-17", end_date:"2018-01-15"
+    data = JSON.parse(response.body)
+    expect(data["fee"]).to eq(1200)
+
+  end
+
+  it "should get fee many month" do
     add_license({month: "2017-01", amount: 500})
     add_license({month: "2017-02", amount: 500})
     add_license({month: "2017-03", amount: 310})
@@ -93,7 +106,7 @@ RSpec.describe LicensesController, type: :controller do
 
   end
 
-  it "should get fee" do
+  it "should get fee same month" do
     add_license({month: "2017-01", amount: 500})
     add_license({month: "2017-02", amount: 500})
     add_license({month: "2017-03", amount: 310})
@@ -106,7 +119,7 @@ RSpec.describe LicensesController, type: :controller do
 
   end
 
-  it "should get fee" do
+  it "should get fee from middle to middle" do
     add_license({month: "2017-01", amount: 310})
     add_license({month: "2017-02", amount: 500})
     add_license({month: "2017-03", amount: 310})
