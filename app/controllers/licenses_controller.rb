@@ -41,28 +41,13 @@ class LicensesController < ApplicationController
   def search
     startDate = Date.parse(license_dates[:start])
     endDate = Date.parse(license_dates[:end])
-    step = startDate
-    total = 0
-    licenses = License.where(month: (startDate - 1.month)..endDate)
 
     if startDate > endDate
       render json: -1, status: :bad_request, data: nil
       return
     end
 
-    while step <= endDate
-      days = Time.days_in_month(step.month, step.year)
-      license = licenses.where(month: step.year.to_s + "-" + step.strftime('%m').to_s).first
-      amountThisMonth = 0
-
-      if !license.nil?
-        amountThisMonth = license.amount
-      end
-
-      total = total + amountThisMonth / days
-      
-      step = step + 1.day
-    end
+    total = License.new.getTotalAmount(startDate, endDate)
 
     render json: total, status: :ok, data: nil
     
